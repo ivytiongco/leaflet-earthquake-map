@@ -8,6 +8,12 @@ d3.json(queryUrl, function(data) {
   createFeatures(data.features);
 });
 
+// Function to determine marker size based on population
+function markerSize(magnitude) {
+  return magnitude;
+}
+
+
 function createFeatures(earthquakeData) {
 
   // Define a function we want to run once for each feature in the features array
@@ -15,16 +21,47 @@ function createFeatures(earthquakeData) {
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
-  }
+
+      // Loop through the features array and create one marker for each city object
+    for (var i = 0; i < features.length; i++) {
+
+      // Conditionals for countries points
+      var markerColor = "";
+      if (features[i].mag >= 5) {
+        markerColor = "red";
+      }
+      else if (features[i].mag >= 4) {
+        markerColor = "orange";
+      }
+      else if (features[i].mag >= 3) {
+        markerColor = "gold";
+      }
+      else if (features[i].mag >= 2) {
+        markerColor = "yellow";
+      }
+      else if (features[i].mag >= 1) {
+        markerColor = "green";
+      }
+      else {
+        markerColor = "red";
+      }
+    }
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
+    pointToLayer: function(feature, latlng) {
+      return new L.CircleMarker(latlng, {
+        radius: markerSize(feature.properties.mag),
+        color: markerColor
+      });
+    },
     onEachFeature: onEachFeature
   });
 
   // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
+  }
 }
 
 function createMap(earthquakes) {
@@ -56,6 +93,7 @@ function createMap(earthquakes) {
   var overlayMaps = {
     Earthquakes: earthquakes
   };
+
 
   // Create our map, giving it the streetmap and earthquakes layers to display on load
   var myMap = L.map("map", {
