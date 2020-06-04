@@ -45,7 +45,7 @@ function createFeatures(earthquakeData) {
         markerColor = "green";
       }
       else {
-        markerColor = "red";
+        markerColor = "white";
       }
     }
 
@@ -113,3 +113,5 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 }
+
+
