@@ -21,7 +21,9 @@ function createFeatures(earthquakeData) {
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+  }
 
+  function markerColor (customColor)
       // Loop through the features array and create one marker for each city object
     for (var i = 0; i < features.length; i++) {
 
@@ -61,7 +63,7 @@ function createFeatures(earthquakeData) {
 
   // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
-  }
+  
 }
 
 function createMap(earthquakes) {
