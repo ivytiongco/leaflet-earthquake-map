@@ -7,4 +7,4 @@
 
 ## Map
 
-![](map.png)
+![](MAP.png)
